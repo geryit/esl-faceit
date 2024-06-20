@@ -28,6 +28,9 @@ To help us evaluate technical fit, you must use Redux for state management, and 
 The following is a suggestion for the design, but not a requirement:
 
 - **Feed**: A view with a scrollable list of posts, each showing an author, avatar, and a snippet of the post body (first 100 characters).
+- 
+![Screenshot by Dropbox Capture](https://github.com/geryit/esl-faceit/assets/514149/7524fca7-dd02-4851-8ff6-f8f3e3c028e1)
+
 
 ### Considerations
 
