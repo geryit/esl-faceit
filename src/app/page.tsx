@@ -1,22 +1,22 @@
-import PostList from "@/components/PostList";
-import { getPosts } from "@/actions/getPosts";
-import { POSTS_PER_PAGE } from "@/config/constants";
+import { getFeeds } from "@/actions/getFeeds";
+import { FEED_PER_PAGE } from "@/config/constants";
+import FeedList from "@/components/FeedList";
 
 export default async function Home() {
-  const initialPosts = await getPosts(0, POSTS_PER_PAGE);
+  const initialFeeds = await getFeeds(0, FEED_PER_PAGE);
 
   return (
     <>
       <div className="max-w-3xl mx-auto p-5">
         <h1 className="text-center text-2xl mb-2">
-          Loading posts asynchronously
+          Loading feeds asynchronously
         </h1>
 
         <h3 className="text-center mb-5 text-slate-600">
           Just on a button click
         </h3>
 
-        <PostList initialPosts={initialPosts} />
+        <FeedList initialFeeds={initialFeeds} />
       </div>
     </>
   );
