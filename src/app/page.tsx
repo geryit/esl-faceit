@@ -1,9 +1,35 @@
+"use client";
+
 import { getFeeds } from "@/actions/getFeeds";
 import { FEED_PER_PAGE } from "@/config/constants";
 import FeedList from "@/components/FeedList";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchPosts } from "@/lib/features/posts/postsSlice";
+import { useEffect } from "react";
 
-export default async function Home() {
-  const initialFeeds = await getFeeds(0, FEED_PER_PAGE);
+export default function Home() {
+  // const initialFeeds = await getFeeds(0, FEED_PER_PAGE);
+  const dispatch = useAppDispatch();
+  const posts = useAppSelector((state) => state.posts.posts);
+  const postStatus = useAppSelector((state) => state.posts.status);
+
+  useEffect(() => {
+    if (postStatus === "idle") {
+      dispatch(fetchPosts(1));
+    }
+  }, [postStatus, dispatch]);
+
+  console.log({ posts });
+
+  // useEffect(() => {
+  //   socket.on("new-post", (post) => {
+  //     dispatch(addPost(post));
+  //   });
+
+  //   return () => {
+  //     socket.off("new-post");
+  //   };
+  // }, [dispatch]);
 
   return (
     <>
@@ -16,7 +42,7 @@ export default async function Home() {
           Just on a button click
         </h3>
 
-        <FeedList initialFeeds={initialFeeds} />
+        {/* <FeedList initialFeeds={initialFeeds} /> */}
       </div>
     </>
   );
