@@ -1,17 +1,15 @@
-// components/PostList.tsx
-
 "use client";
 import { useState } from "react";
 import { Post } from "@/types/Post";
 import { POSTS_PER_PAGE } from "@/config/constants";
 import { getPosts } from "@/actions/getPosts";
-import PostCard from "@/components/PostCard";
+import FeedCard from "./FeedCard";
 
-type PostListProps = {
+type Props = {
   initialPosts: Post[];
 };
 
-export default function PostList({ initialPosts }: PostListProps) {
+export default function FeedList({ initialPosts }: Props) {
   const [offset, setOffset] = useState(POSTS_PER_PAGE);
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [hasMoreData, setHasMoreData] = useState(true);
@@ -33,7 +31,7 @@ export default function PostList({ initialPosts }: PostListProps) {
     <>
       <div className="flex flex-col gap-2">
         {posts?.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <FeedCard key={post.id} post={post} />
         ))}
       </div>
       <div className="text-center mt-5">
