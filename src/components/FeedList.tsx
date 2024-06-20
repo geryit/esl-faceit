@@ -50,13 +50,7 @@ export default function FeedList({ initialFeeds }: Props) {
       </div>
       <div className="text-center mt-5">
         {hasMoreData && (
-          <button
-            ref={scrollTrigger}
-            className="px-4 py-3 bg-slate-500 hover:bg-slate-600 text-slate-50 rounded-md"
-            onClick={loadMoreFeeds}
-          >
-            Load More Feeds
-          </button>
+          <div ref={scrollTrigger}>Loading...</div>
         )}
       </div>
     </>
