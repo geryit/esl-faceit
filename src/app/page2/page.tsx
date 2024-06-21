@@ -8,17 +8,6 @@ import { useEffect } from "react";
 
 export default function Home() {
   // const initialFeeds = await getFeeds(0, FEED_PER_PAGE);
-  const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.posts.posts);
-  const postStatus = useAppSelector((state) => state.posts.status);
-
-  useEffect(() => {
-    if (postStatus === "idle") {
-      dispatch(fetchPosts(1));
-    }
-  }, [postStatus, dispatch]);
-
-  console.log({ posts });
 
   // useEffect(() => {
   //   socket.on("new-post", (post) => {
@@ -41,7 +30,7 @@ export default function Home() {
           Just on a button click
         </h3>
 
-        {/* <FeedList initialFeeds={initialFeeds} /> */}
+        <FeedList />
       </div>
     </>
   );
