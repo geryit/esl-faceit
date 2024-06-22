@@ -1,18 +1,8 @@
 import { API_URL } from "@/config/constants";
+import type { Post } from "@/types/Post";
+import type { User } from "@/types/User";
 import { handleError } from "@/utils/handleResponseError";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-  userId: number;
-}
 
 interface PostsState {
   posts: Post[];
@@ -39,7 +29,7 @@ export const fetchPosts = createAsyncThunk(
   async (page: number) => {
     const limit = 20;
     const offset = (page - 1) * limit;
-    const url = `${API_URL}?_start=${offset}&_limit=${limit}`;
+    const url = `${API_URL}/posts/?_start=${offset}&_limit=${limit}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw await handleError(response);
@@ -53,9 +43,7 @@ export const fetchUsers = createAsyncThunk(
   async (userIds: number[]) => {
     return Promise.all(
       userIds.map(async (userId) => {
-        const response = await fetch(
-          `https://jsonplaceholder.typicode.com/users/${userId}`
-        );
+        const response = await fetch(`${API_URL}/users/${userId}`);
         if (!response.ok) {
           throw await handleError(response);
         }
