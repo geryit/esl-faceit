@@ -23,7 +23,7 @@ export default function useWs(
         });
 
         ws.send(testMessage);
-      }, 1000);
+      }, 3000);
     };
 
     ws.onmessage = (event) => {

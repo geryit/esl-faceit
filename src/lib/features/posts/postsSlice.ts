@@ -23,7 +23,7 @@ const initialState: PostsState = {
   usersStatus: "idle",
   error: null,
   page: 1,
-  hasMoreData: true,
+  hasMoreData: false,
 };
 
 export const fetchSinglePost = createAsyncThunk(
@@ -81,8 +81,6 @@ const postsSlice = createSlice({
         if (!state.posts.find((p) => p.id === action.payload.id)) {
           state.posts.push(action.payload);
         }
-
-        console.log({ action });
       })
       .addCase(fetchSinglePost.rejected, (state, action) => {
         state.singleStatus = "failed";

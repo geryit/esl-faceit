@@ -2,9 +2,8 @@
 
 import { fetchSinglePost, fetchUsers } from "@/lib/features/posts/postsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { use, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function PostCard({ params }: { params: { id: string } }) {

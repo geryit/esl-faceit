@@ -1,34 +1,33 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import { FEED_PER_PAGE } from "@/config/constants";
-import { getFeeds } from "@/actions/getFeeds";
-import FeedCard from "./PostCard";
-import { useInView } from "react-intersection-observer";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import PostCard from "./PostCard";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
-import uniqBy from "lodash.uniqby";
 import type { Post } from "@/types/Post";
+import useWs from "@/hooks/useWs";
+import useWebSocket from "react-use-websocket";
 import isJsonString from "@/utils/isJsonString";
-import useWs from "@/hooks/ws";
 
 export default function PostList() {
-  const [offset, setOffset] = useState(FEED_PER_PAGE);
-  // const [hasMoreData, setHasMoreData] = useState(true);
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.posts.posts);
   const users = useAppSelector((state) => state.posts.users);
   const postStatus = useAppSelector((state) => state.posts.status);
-  const usersStatus = useAppSelector((state) => state.posts.usersStatus);
   const page = useAppSelector((state) => state.posts.page);
   const hasMoreData = useAppSelector((state) => state.posts.hasMoreData);
+  const [newPost, setNewPost] = useState<Post>();
+  const scrollTrigger = useRef(null);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
+    "wss://echo.websocket.org"
+  );
+
+  // useWs(setNewPost);
 
   useEffect(() => {
     if (postStatus === "idle") {
       dispatch(fetchPosts(page));
     }
   }, [postStatus, dispatch, page]);
-
-  const [scrollTrigger, isInView] = useInView();
 
   useEffect(() => {
     const uniqUserIds = [...new Set(posts.map((p) => p.userId))];
@@ -38,53 +37,82 @@ export default function PostList() {
     dispatch(fetchUsers(onlyNewUserIds));
   }, [dispatch, posts, users]);
 
-  // const loadMoreFeeds = useCallback(async () => {
-  //   if (hasMoreData) {
-  //     const apiFeeds = await getFeeds(offset, FEED_PER_PAGE);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.IntersectionObserver) {
+      return;
+    }
 
-  //     if (!apiFeeds.length) {
-  //       setHasMoreData(false);
-  //     }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          dispatch(fetchPosts(page));
+        }
+      },
+      { threshold: 1 }
+    );
 
-  //     setFeeds((prevFeeds) => [...prevFeeds, ...apiFeeds]);
-  //     setOffset((prevOffset) => prevOffset + FEED_PER_PAGE);
-  //   }
-  // }, [offset, hasMoreData]);
+    if (scrollTrigger.current) {
+      observer.observe(scrollTrigger.current);
+    }
 
-  // useEffect(() => {
-  //   if (isInView && hasMoreData) {
-  //     loadMoreFeeds();
-  //   }
-  // }, [isInView, hasMoreData, loadMoreFeeds]);
+    return () => {
+      if (scrollTrigger.current) {
+        observer.unobserve(scrollTrigger.current);
+      }
+    };
+  }, [dispatch, page]);
 
-  const [newPost, setNewPost] = useState<Post>();
+  const realtimePost = useMemo(() => {
+    const data = isJsonString(lastMessage?.data)
+      ? JSON.parse(lastMessage?.data)
+      : undefined;
 
-  useWs(setNewPost);
+    if (data?.type === "realtimePost") return data;
+  }, [lastMessage?.data]);
+
+  const sendRealTimePost = useCallback(() => {
+    sendMessage(
+      JSON.stringify({
+        type: "realtimePost",
+        id: 0,
+        title: "Real-Time Post",
+        body: "This is a real-time post received via WebSocket.",
+        userId: 1,
+      })
+    );
+  }, [sendMessage]);
 
   return (
-    <>
+    <div>
+      <button
+        onClick={sendRealTimePost}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+      >
+        Add real time post
+      </button>
       <div className="flex flex-col gap-2">
-        {[newPost, ...posts]?.map(
-          (post) =>
-            post && (
-              <FeedCard key={post.id} post={post} user={users[post.userId]} />
-            )
+        {realtimePost && (
+          <PostCard
+            post={realtimePost}
+            user={
+              realtimePost?.userId ? users[realtimePost?.userId] : undefined
+            }
+          />
         )}
+
+        {posts?.map((post, i) => (
+          <PostCard
+            key={i}
+            post={post}
+            user={post?.userId ? users[post?.userId] : undefined}
+          />
+        ))}
       </div>
-      <div className="text-center mt-5">
-        {/* {hasMoreData && <div ref={scrollTrigger}>Loading...</div>} */}
-        {hasMoreData && (
-          <button
-            className="px-4 py-3 bg-slate-500 hover:bg-slate-600 text-slate-50 rounded-md"
-            onClick={() => {
-              if (postStatus === "loading") return;
-              dispatch(fetchPosts(page));
-            }}
-          >
-            Load More Posts
-          </button>
-        )}
-      </div>
-    </>
+      {hasMoreData && (
+        <div className="text-center mt-5 p-4" ref={scrollTrigger}>
+          <div>Loading...</div>
+        </div>
+      )}
+    </div>
   );
 }
