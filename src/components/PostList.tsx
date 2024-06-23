@@ -36,24 +36,6 @@ export default function PostList() {
     dispatch(fetchUsers(onlyNewUserIds));
   }, [dispatch, posts, users]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: JSON.stringify({
-          title: "foo",
-          body: "bar",
-          userId: 1,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-    }, 1000);
-  }, []);
-
   console.log({ posts, users });
 
   // const loadMoreFeeds = useCallback(async () => {
@@ -75,12 +57,57 @@ export default function PostList() {
   //   }
   // }, [isInView, hasMoreData, loadMoreFeeds]);
 
+  const [newPost, setNewPost] = useState<Post>();
+
+  useEffect(() => {
+    const ws = new WebSocket("wss://echo.websocket.org");
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+
+      // Send a test message to the echo server
+
+      setTimeout(() => {
+        const testMessage = JSON.stringify({
+          id: 0,
+          title: "Real-Time Post",
+          body: "This is a real-time post received via WebSocket.",
+          userId: 1,
+        });
+
+        ws.send(testMessage);
+      }, 3000);
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const newPost = JSON.parse(event.data);
+        setNewPost(newPost);
+      } catch (error) {
+        console.log("Error parsing JSON:", error, event.data);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  console.log({ newPost });
+
   return (
     <>
       <div className="flex flex-col gap-2">
-        {posts?.map((post) => (
-          <FeedCard key={post.id} post={post} user={users[post.userId]} />
-        ))}
+        {[newPost, ...posts]?.map(
+          (post) =>
+            post && (
+              <FeedCard key={post.id} post={post} user={users[post.userId]} />
+            )
+        )}
       </div>
       <div className="text-center mt-5">
         {/* {hasMoreData && <div ref={scrollTrigger}>Loading...</div>} */}
