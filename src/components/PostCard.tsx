@@ -3,6 +3,7 @@ import type { Post } from "@/types/Post";
 import type { User } from "@/types/User";
 import Image from "next/image";
 import Link from "next/link";
+import truncate from "@/utils/truncate";
 
 type Props = {
   post: Post;
@@ -33,7 +34,9 @@ function PostCard({ post, user }: Props) {
           <h2 className="mb-4 text-xl font-extrabold first-letter:uppercase">
             {user.name} - {post.title}
           </h2>
-          <p className="text-gray-600 first-letter:uppercase">{post.body}</p>
+          <p className="text-gray-600 first-letter:uppercase">
+            {truncate(post.body)}
+          </p>
         </div>
       </Link>
     )

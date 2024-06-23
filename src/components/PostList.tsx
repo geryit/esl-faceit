@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
 import uniqBy from "lodash.uniqby";
 import type { Post } from "@/types/Post";
+import isJsonString from "@/utils/isJsonString";
 
 export default function PostList() {
   const [offset, setOffset] = useState(FEED_PER_PAGE);
@@ -80,11 +81,9 @@ export default function PostList() {
     };
 
     ws.onmessage = (event) => {
-      try {
+      if (isJsonString(event.data)) {
         const newPost = JSON.parse(event.data);
         setNewPost(newPost);
-      } catch (error) {
-        console.log("Error parsing JSON:", error, event.data);
       }
     };
 

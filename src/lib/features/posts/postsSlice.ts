@@ -8,6 +8,7 @@ interface PostsState {
   posts: Post[];
   users: { [key: number]: User };
   status: "idle" | "loading" | "succeeded" | "failed";
+  singleStatus: "idle" | "loading" | "succeeded" | "failed";
   usersStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   page: number;
@@ -18,11 +19,23 @@ const initialState: PostsState = {
   posts: [],
   users: {},
   status: "idle",
+  singleStatus: "idle",
   usersStatus: "idle",
   error: null,
   page: 1,
   hasMoreData: true,
 };
+
+export const fetchSinglePost = createAsyncThunk(
+  "posts/fetchSinglePost",
+  async (postId: number) => {
+    const response = await fetch(`${API_URL}/posts/${postId}`);
+    if (!response.ok) {
+      throw await handleError(response);
+    }
+    return (await response.json()) as Post;
+  }
+);
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
@@ -59,11 +72,31 @@ const postsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchSinglePost.pending, (state) => {
+        state.singleStatus = "loading";
+      })
+      .addCase(fetchSinglePost.fulfilled, (state, action) => {
+        state.singleStatus = "succeeded";
+        // add the new post to the array if it doesnt exist
+        if (!state.posts.find((p) => p.id === action.payload.id)) {
+          state.posts.push(action.payload);
+        }
+
+        console.log({ action });
+      })
+      .addCase(fetchSinglePost.rejected, (state, action) => {
+        state.singleStatus = "failed";
+        state.error = action.error.message || "Could not fetch post";
+      })
       .addCase(fetchPosts.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
+        // empty your posts array if its the first page
+        if (state.page === 1) {
+          state.posts = [];
+        }
         state.posts = state.posts.concat(action.payload);
         state.page += 1;
         state.hasMoreData = action.payload.length > 0;
