@@ -9,6 +9,7 @@ import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
 import uniqBy from "lodash.uniqby";
 import type { Post } from "@/types/Post";
 import isJsonString from "@/utils/isJsonString";
+import useWs from "@/hooks/ws";
 
 export default function PostList() {
   const [offset, setOffset] = useState(FEED_PER_PAGE);
@@ -37,8 +38,6 @@ export default function PostList() {
     dispatch(fetchUsers(onlyNewUserIds));
   }, [dispatch, posts, users]);
 
-  console.log({ posts, users });
-
   // const loadMoreFeeds = useCallback(async () => {
   //   if (hasMoreData) {
   //     const apiFeeds = await getFeeds(offset, FEED_PER_PAGE);
@@ -60,43 +59,7 @@ export default function PostList() {
 
   const [newPost, setNewPost] = useState<Post>();
 
-  useEffect(() => {
-    const ws = new WebSocket("wss://echo.websocket.org");
-
-    ws.onopen = () => {
-      console.log("WebSocket connection established");
-
-      // Send a test message to the echo server
-
-      setTimeout(() => {
-        const testMessage = JSON.stringify({
-          id: 0,
-          title: "Real-Time Post",
-          body: "This is a real-time post received via WebSocket.",
-          userId: 1,
-        });
-
-        ws.send(testMessage);
-      }, 3000);
-    };
-
-    ws.onmessage = (event) => {
-      if (isJsonString(event.data)) {
-        const newPost = JSON.parse(event.data);
-        setNewPost(newPost);
-      }
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, []);
-
-  console.log({ newPost });
+  useWs(setNewPost);
 
   return (
     <>

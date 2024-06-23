@@ -2,11 +2,14 @@
 
 import { fetchSinglePost, fetchUsers } from "@/lib/features/posts/postsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect } from "react";
+import { use, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function PostCard({ params }: { params: { id: string } }) {
+  const router = useRouter();
+
   const { id } = params;
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.posts.posts);
@@ -28,17 +31,19 @@ export default function PostCard({ params }: { params: { id: string } }) {
     dispatch(fetchUsers([post?.userId]));
   }, [dispatch, post, user?.id]);
 
-  console.log({ post, user });
+  const handleOnBack = useCallback(() => {
+    router.back();
+  }, [router]);
 
   if (!post || !user) {
-    return <div>Loading...</div>;
+    return <div className="text-center p-8">Loading...</div>;
   }
   return (
-    <div className=" max-w-3xl mx-auto mt-8">
-      <Link href="/" className="underline font-semibold">
+    <div className="max-w-3xl mx-auto mt-8">
+      <button onClick={handleOnBack} className="underline font-semibold">
         ← Back to posts
-      </Link>
-      <div className="p-8 bg-gray-100 flex gap-4 mt-4">
+      </button>
+      <div className="p-4 bg-gray-100 flex gap-4 mt-4">
         <div>
           <Image
             src={`https://i.pravatar.cc/160?u=${user.id}`}

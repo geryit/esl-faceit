@@ -15,8 +15,8 @@ function PostCard({ post, user }: Props) {
   return (
     user && (
       <Link
-        href={`/post/${post.id}`}
-        className={`p-8 bg-gray-100 flex gap-4 ${
+        href={!isNewPost ? `/post/${post.id}` : ""}
+        className={`p-4 bg-gray-100 hover:bg-gray-200 transition duration-300 flex gap-4 ${
           isNewPost ? "animate-highlight" : ""
         }`}
       >
