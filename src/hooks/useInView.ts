@@ -1,8 +1,12 @@
-import {MutableRefObject, useEffect} from "react";
-import {fetchPosts} from "@/lib/features/posts/postsSlice";
-import {ThunkDispatch} from "redux-thunk";
+import { MutableRefObject, useEffect } from "react";
+import { fetchPosts } from "@/lib/features/posts/postsSlice";
+import { ThunkDispatch } from "redux-thunk";
 
-export default function useInView(dispatch:  ThunkDispatch<any, any, any>, page: number, scrollTrigger:  MutableRefObject<null>) {
+export default function useInView(
+  dispatch: ThunkDispatch<any, any, any>,
+  page: number,
+  scrollTrigger: MutableRefObject<null>
+) {
   useEffect(() => {
     if (typeof window === "undefined" || !window.IntersectionObserver) {
       return;
@@ -26,5 +30,5 @@ export default function useInView(dispatch:  ThunkDispatch<any, any, any>, page:
         observer.unobserve(scrollTrigger.current);
       }
     };
-  }, [dispatch, page])
+  }, [dispatch, page, scrollTrigger]);
 }

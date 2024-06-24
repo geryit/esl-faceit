@@ -9,11 +9,11 @@ import PostCardPlaceHolder from "@/components/PostCardPlaceHolder";
 type Props = {
   post?: Post;
   user?: User;
-  isSinglePage: boolean; // If a single post component in dynamic route (eg: /post/[id].tsx)
+  isSinglePage?: boolean; // If a single post component in dynamic route (eg: /post/[id].tsx)
 };
 
 function PostCard({ post, user, isSinglePage = false }: Props) {
-  const isNewPost = post?.id === 0;
+  const isNewPost = post?.id === 0; // If a real time post added with WebSocket.
   return !post || !user ? (
     <PostCardPlaceHolder />
   ) : (

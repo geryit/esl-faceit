@@ -1,7 +1,10 @@
 import { memo } from "react";
 
 const PostCardPlaceHolder = () => (
-  <div className="animate-pulse flex flex-col gap-2">
+  <div
+    className="animate-pulse flex flex-col gap-2"
+    data-testid="postcard-placeholder"
+  >
     <div className="border border-blue-300 shadow rounded-md p-4 w-full mx-auto">
       <div className="animate-pulse flex space-x-4">
         <div className="rounded bg-slate-700 h-20 w-20"></div>
