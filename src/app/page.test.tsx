@@ -5,9 +5,7 @@ import { setupServer } from 'msw/node'
 import {handlers} from "@/mocks/handlers";
 
 
-// We use msw to intercept the network request during the test,
-// and return the response 'John Smith' after 150ms
-
+// Setup the server to handle requests
 const server = setupServer(...handlers)
 
 // Enable API mocking before tests.
@@ -19,13 +17,14 @@ afterEach(() => server.resetHandlers())
 // Disable API mocking after the tests are done.
 afterAll(() => server.close())
 
+// Test suite for the Page component
 describe("Page", () => {
 
-  it("renders a heading", async () => {
+  it("renders page correctly", async () => {
     await act( async () => renderWithProviders(<Page/>));
 
-    screen.debug();
-
     expect(screen.getByText("Posts")).toBeInTheDocument()
+    expect(screen.getByText("Loading...")).toBeInTheDocument()
+    expect(screen.getAllByText("Leanne Graham")[0]).toBeInTheDocument()
   });
 });

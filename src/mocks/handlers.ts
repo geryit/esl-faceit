@@ -1,7 +1,7 @@
 import {http, HttpResponse} from "msw";
 import {API_URL} from "@/config/constants";
 
-const posts = [
+export const posts = [
   {
     "userId": 1,
     "id": 1,
@@ -15,7 +15,7 @@ const posts = [
     "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
   }]
 
-const user = {
+export const user = {
   "id": 1,
   "name": "Leanne Graham",
   "username": "Bret",

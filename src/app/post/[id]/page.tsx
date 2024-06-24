@@ -3,63 +3,50 @@
 import { fetchSinglePost, fetchUsers } from "@/lib/features/posts/postsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useCallback, useEffect } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import PostCard from "@/components/PostCard";
 
-export default function PostCard({ params }: { params: { id: string } }) {
+export default function SinglePost({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   const { id } = params;
   const dispatch = useAppDispatch();
+
+  // If posts already fetched before, get the post from the store
   const posts = useAppSelector((state) => state.posts.posts);
 
+  // Get the post from the store
   const post = posts.find((p) => p.id === Number(id));
 
+  // Fetch the user for the post
   const user = useAppSelector((state) =>
-    post?.userId ? state.posts.users[post?.userId] : null
+    post?.userId ? state.posts.users[post?.userId] : undefined
   );
 
+  // If post is not fetched, fetch the single post
   useEffect(() => {
     if (id && !post) {
       dispatch(fetchSinglePost(Number(id)));
     }
   }, [id, dispatch, post]);
 
+  // Fetch the user for the post
   useEffect(() => {
     if (!post || user?.id) return;
     dispatch(fetchUsers([post?.userId]));
   }, [dispatch, post, user?.id]);
 
+  // Go back to the previous page to the same scroll position
   const handleOnBack = useCallback(() => {
     router.back();
   }, [router]);
 
-  if (!post || !user) {
-    return <div className="text-center p-8">Loading...</div>;
-  }
   return (
     <div className="max-w-3xl mx-auto mt-8">
-      <button onClick={handleOnBack} className="underline font-semibold">
+      <button onClick={handleOnBack} className="underline font-semibold mb-4">
         ← Back to posts
       </button>
-      <div className="rounded p-4 bg-gray-100 flex gap-4 mt-4">
-        <div>
-          <Image
-            src={`https://i.pravatar.cc/160?u=${user.id}`}
-            alt={user.name}
-            width={80}
-            height={80}
-            className="rounded"
-          />
-        </div>
-
-        <div className="flex-1">
-          <h2 className="mb-4 text-xl font-extrabold first-letter:uppercase">
-            {user.name}
-          </h2>
-          <p className="text-gray-600 first-letter:uppercase">{post.body}</p>
-        </div>
-      </div>
+      <PostCard post={post} user={user} isSinglePage />
     </div>
   );
 }

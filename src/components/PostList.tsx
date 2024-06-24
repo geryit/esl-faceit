@@ -1,11 +1,10 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import PostCard from "./PostCard";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
-import type { Post } from "@/types/Post";
-import useWebSocket from "react-use-websocket";
-import isJsonString from "@/utils/isJsonString";
+import useInView from "@/hooks/useInView";
+import useRealTimePost from "@/hooks/useRealTimePost";
 
 export default function PostList() {
   const dispatch = useAppDispatch();
@@ -15,14 +14,15 @@ export default function PostList() {
   const page = useAppSelector((state) => state.posts.page);
   const hasMoreData = useAppSelector((state) => state.posts.hasMoreData);
   const scrollTrigger = useRef(null);
-  const { sendMessage, lastMessage } = useWebSocket("wss://echo.websocket.org");
 
   useEffect(() => {
+    // Fetch the initial posts and dispatch
     if (postStatus === "idle") {
       dispatch(fetchPosts(page));
     }
   }, [postStatus, dispatch, page]);
 
+  // Fetch users for the posts and dispatch
   useEffect(() => {
     const uniqUserIds = [...new Set(posts.map((p) => p.userId))];
 
@@ -31,51 +31,12 @@ export default function PostList() {
     dispatch(fetchUsers(onlyNewUserIds));
   }, [dispatch, posts, users]);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.IntersectionObserver) {
-      return;
-    }
+  // Fetch more posts when the user scrolls to the bottom of the page
+  // scrollTrigger is a ref to the loading div at the bottom of the page
+  useInView(dispatch, page, scrollTrigger);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          dispatch(fetchPosts(page));
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (scrollTrigger.current) {
-      observer.observe(scrollTrigger.current);
-    }
-
-    return () => {
-      if (scrollTrigger.current) {
-        observer.unobserve(scrollTrigger.current);
-      }
-    };
-  }, [dispatch, page]);
-
-  const realtimePost = useMemo(() => {
-    const data = isJsonString(lastMessage?.data)
-      ? JSON.parse(lastMessage?.data)
-      : undefined;
-
-    if (data?.type === "realtimePost") return data;
-  }, [lastMessage?.data]);
-
-  const sendRealTimePost = useCallback(() => {
-    sendMessage(
-      JSON.stringify({
-        type: "realtimePost",
-        id: 0,
-        title: "Real-Time Post",
-        body: "This is a real-time post received via WebSocket.",
-        userId: 1,
-      })
-    );
-  }, [sendMessage]);
-
+  // Mock a real time post using WebSocket
+  const [sendRealTimePost, realtimePost] = useRealTimePost()
 
   return (
     <div>

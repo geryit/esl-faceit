@@ -9,19 +9,20 @@ import PostCardPlaceHolder from "@/components/PostCardPlaceHolder";
 type Props = {
   post?: Post;
   user?: User;
+  isSinglePage: boolean; // If a single post component in dynamic route (eg: /post/[id].tsx)
 };
 
-function PostCard({ post, user }: Props) {
+function PostCard({ post, user, isSinglePage = false }: Props) {
   const isNewPost = post?.id === 0;
   return !post || !user ? (
     <PostCardPlaceHolder />
   ) : (
     <Link
-      href={!isNewPost ? `/post/${post.id}` : ""}
+      href={!isNewPost ? `/post/${post.id}` : ""} // Prevent routing if a real time post.
       scroll={false}
-      className={`rounded p-4 bg-gray-100 hover:bg-gray-200 transition duration-300 flex gap-4 ${
+      className={`rounded p-4 bg-gray-100  transition duration-300 flex gap-4 ${
         isNewPost ? "animate-highlight" : ""
-      }`}
+      } ${!isSinglePage ? "hover:bg-gray-200" : "cursor-default"}`}
     >
       <div>
         <Image
