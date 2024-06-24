@@ -1,5 +1,3 @@
-import { should } from "chai";
-
 describe("URL and Element Test with Network Call Check", () => {
   it("should visit the URL, check for the element, scroll to the bottom, and verify network call", () => {
     // Step 1: Visit the URL

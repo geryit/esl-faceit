@@ -21,13 +21,16 @@ export default function useInView(
       { threshold: 1 }
     );
 
-    if (scrollTrigger.current) {
-      observer.observe(scrollTrigger.current);
+    const currentTarget = scrollTrigger.current;
+
+    if (currentTarget) {
+      observer.observe(currentTarget);
     }
 
     return () => {
-      if (scrollTrigger.current) {
-        observer.unobserve(scrollTrigger.current);
+      if (currentTarget) {
+        // Use the copied variable
+        observer.unobserve(currentTarget);
       }
     };
   }, [dispatch, page, scrollTrigger]);
