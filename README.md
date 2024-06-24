@@ -68,7 +68,7 @@ To run intergration tests:
 npm test
 ```
 
-To run e2e tests:
+To run e2e tests on local:
 
 ```bash
 npm run cypress:open
