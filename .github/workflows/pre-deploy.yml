@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Pre-deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,10 +16,9 @@ jobs:
         with:
           node-version: 20
 
-      - run: yarn install --frozen-lockfile
+      - run: npm ci
 
-      - name: Run tests
-        run: yarn test --watchAll=false
+      - run: npm run test --watchAll=false
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
