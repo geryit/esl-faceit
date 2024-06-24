@@ -4,7 +4,7 @@ import { fetchSinglePost, fetchUsers } from "@/lib/features/posts/postsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import PostCard from "@/components/PostCard";
+import PostCardSinglePost from "@/components/PostCardSinglePost";
 
 export default function SinglePost({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function SinglePost({ params }: { params: { id: string } }) {
       <button onClick={handleOnBack} className="underline font-semibold mb-4">
         ← Back to posts
       </button>
-      <PostCard post={post} user={user} isSinglePage />
+      <PostCardSinglePost post={post} user={user} />
     </div>
   );
 }

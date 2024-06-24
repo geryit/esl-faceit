@@ -20,11 +20,7 @@ describe("PostCard Component", () => {
   it("renders a real time post added with websocket", async () => {
     await act(async () =>
       renderWithProviders(
-        <PostCard
-          post={{ ...posts[0], id: 0 }}
-          user={user}
-          isSinglePage={false}
-        />
+        <PostCard post={{ ...posts[0], id: 0 }} user={user} />
       )
     );
 
@@ -34,19 +30,6 @@ describe("PostCard Component", () => {
 
     // Check if the element has the cursor-default class when isSinglePage is true
     expect(elementWithCursorDefaultClass).toHaveClass("animate-highlight");
-  });
-
-  it("renders a not clickable post when isSinglePage is true", async () => {
-    await act(async () =>
-      renderWithProviders(<PostCard post={posts[0]} user={user} isSinglePage />)
-    );
-
-    const elementWithCursorDefaultClass = screen
-      .getByText("Leanne Graham")
-      .closest("a"); // Find the link element
-
-    // Check if the element has the cursor-default class when isSinglePage is true
-    expect(elementWithCursorDefaultClass).toHaveClass("cursor-default");
   });
 
   it("renders PostCardPlaceHolder when post is undefined", async () => {
@@ -67,9 +50,7 @@ describe("PostCard Component", () => {
 
   it("renders a clickable post when isSinglePage is false", async () => {
     await act(async () =>
-      renderWithProviders(
-        <PostCard post={posts[0]} user={user} isSinglePage={false} />
-      )
+      renderWithProviders(<PostCard post={posts[0]} user={user} />)
     );
 
     const linkElement = screen.getByText("Leanne Graham").closest("a"); // Find the link element

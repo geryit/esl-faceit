@@ -9,10 +9,9 @@ import PostCardPlaceHolder from "@/components/PostCardPlaceHolder";
 type Props = {
   post?: Post;
   user?: User;
-  isSinglePage?: boolean; // If a single post component in dynamic route (eg: /post/[id].tsx)
 };
 
-function PostCard({ post, user, isSinglePage = false }: Props) {
+function PostCard({ post, user }: Props) {
   const isNewPost = post?.id === 0; // If a real time post added with WebSocket.
   return !post || !user ? (
     <PostCardPlaceHolder />
@@ -22,7 +21,7 @@ function PostCard({ post, user, isSinglePage = false }: Props) {
       scroll={false}
       className={`rounded p-4 bg-gray-100  transition duration-300 flex gap-4 ${
         isNewPost ? "animate-highlight" : ""
-      } ${!isSinglePage ? "hover:bg-gray-200" : "cursor-default"}`}
+      }`}
     >
       <div>
         <Image
