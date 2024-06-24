@@ -1,4 +1,4 @@
-import { API_URL } from "@/config/constants";
+import {API_URL, FEED_PER_PAGE} from "@/config/constants";
 import type { Post } from "@/types/Post";
 import type { User } from "@/types/User";
 import { handleError } from "@/utils/handleResponseError";
@@ -40,7 +40,7 @@ export const fetchSinglePost = createAsyncThunk(
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (page: number) => {
-    const limit = 20;
+    const limit = FEED_PER_PAGE;
     const offset = (page - 1) * limit;
     const url = `${API_URL}/posts/?_start=${offset}&_limit=${limit}`;
     const response = await fetch(url);
@@ -95,6 +95,7 @@ const postsSlice = createSlice({
         if (state.page === 1) {
           state.posts = [];
         }
+
         state.posts = state.posts.concat(action.payload);
         state.page += 1;
         state.hasMoreData = action.payload.length > 0;

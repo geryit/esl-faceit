@@ -76,6 +76,7 @@ export default function PostList() {
     );
   }, [sendMessage]);
 
+
   return (
     <div>
       <button
