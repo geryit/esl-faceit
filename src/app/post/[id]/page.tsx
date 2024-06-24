@@ -42,7 +42,7 @@ export default function SinglePost({ params }: { params: { id: string } }) {
   }, [router]);
 
   return (
-    <div className="max-w-3xl mx-auto mt-8">
+    <div className="max-w-3xl mx-auto mt-4 p-4">
       <button onClick={handleOnBack} className="underline font-semibold mb-4">
         ← Back to posts
       </button>
