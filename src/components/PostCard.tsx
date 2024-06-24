@@ -19,7 +19,7 @@ function PostCard({ post, user }: Props) {
     <Link
       href={!isNewPost ? `/post/${post.id}` : ""}
       scroll={false}
-      className={`p-4 bg-gray-100 hover:bg-gray-200 transition duration-300 flex gap-4 ${
+      className={`rounded p-4 bg-gray-100 hover:bg-gray-200 transition duration-300 flex gap-4 ${
         isNewPost ? "animate-highlight" : ""
       }`}
     >
@@ -34,8 +34,8 @@ function PostCard({ post, user }: Props) {
       </div>
 
       <div className="flex-1">
-        <h2 className="mb-4 text-xl font-extrabold first-letter:uppercase">
-          {user?.name} - {post.title}
+        <h2 className="mb-2 text-xl font-extrabold first-letter:uppercase">
+          {user?.name}
         </h2>
         <p className="text-gray-600 first-letter:uppercase">
           {truncate(post.body)}

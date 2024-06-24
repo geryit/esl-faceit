@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "@/lib/store";
 
+// StoreProvider is a component that wraps the children with the Redux Provider
 export default function StoreProvider({
   children,
 }: {

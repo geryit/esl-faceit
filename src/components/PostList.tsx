@@ -4,7 +4,6 @@ import PostCard from "./PostCard";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
 import type { Post } from "@/types/Post";
-import useWs from "@/hooks/useWs";
 import useWebSocket from "react-use-websocket";
 import isJsonString from "@/utils/isJsonString";
 
@@ -15,13 +14,8 @@ export default function PostList() {
   const postStatus = useAppSelector((state) => state.posts.status);
   const page = useAppSelector((state) => state.posts.page);
   const hasMoreData = useAppSelector((state) => state.posts.hasMoreData);
-  const [newPost, setNewPost] = useState<Post>();
   const scrollTrigger = useRef(null);
-  const { sendMessage, lastMessage, readyState } = useWebSocket(
-    "wss://echo.websocket.org"
-  );
-
-  // useWs(setNewPost);
+  const { sendMessage, lastMessage } = useWebSocket("wss://echo.websocket.org");
 
   useEffect(() => {
     if (postStatus === "idle") {
@@ -88,7 +82,7 @@ export default function PostList() {
         onClick={sendRealTimePost}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
       >
-        Add real time post
+        Add a real time post
       </button>
       <div className="flex flex-col gap-2">
         {realtimePost && (

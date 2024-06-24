@@ -42,7 +42,7 @@ export default function PostCard({ params }: { params: { id: string } }) {
       <button onClick={handleOnBack} className="underline font-semibold">
         ← Back to posts
       </button>
-      <div className="p-4 bg-gray-100 flex gap-4 mt-4">
+      <div className="rounded p-4 bg-gray-100 flex gap-4 mt-4">
         <div>
           <Image
             src={`https://i.pravatar.cc/160?u=${user.id}`}
@@ -55,7 +55,7 @@ export default function PostCard({ params }: { params: { id: string } }) {
 
         <div className="flex-1">
           <h2 className="mb-4 text-xl font-extrabold first-letter:uppercase">
-            {user.name} - {post.title}
+            {user.name}
           </h2>
           <p className="text-gray-600 first-letter:uppercase">{post.body}</p>
         </div>
