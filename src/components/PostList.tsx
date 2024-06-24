@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import PostCard from "./PostCard";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchPosts, fetchUsers } from "@/lib/features/posts/postsSlice";
 import useInView from "@/hooks/useInView";
 import useRealTimePost from "@/hooks/useRealTimePost";
 
+// PostList component fetches posts and users from the store
 export default function PostList() {
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.posts.posts);
@@ -36,7 +37,12 @@ export default function PostList() {
   useInView(dispatch, page, scrollTrigger);
 
   // Mock a real time post using WebSocket
-  const [sendRealTimePost, realtimePost] = useRealTimePost()
+  const [sendRealTimePost, realtimePost] = useRealTimePost();
+
+  const user = useMemo(
+    () => (realtimePost?.userId ? users[realtimePost?.userId] : undefined),
+    [realtimePost?.userId, users]
+  );
 
   return (
     <div>
@@ -47,14 +53,7 @@ export default function PostList() {
         Add a real time post
       </button>
       <div className="flex flex-col gap-2">
-        {realtimePost && (
-          <PostCard
-            post={realtimePost}
-            user={
-              realtimePost?.userId ? users[realtimePost?.userId] : undefined
-            }
-          />
-        )}
+        {realtimePost && <PostCard post={realtimePost} user={user} />}
 
         {posts?.map((post, i) => (
           <PostCard

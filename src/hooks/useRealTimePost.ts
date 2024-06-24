@@ -1,7 +1,8 @@
-import {useCallback, useMemo} from "react";
+import { useCallback, useMemo } from "react";
 import isJsonString from "@/utils/isJsonString";
 import useWebSocket from "react-use-websocket";
 
+// Creates a mock real-time post feature using WebSocket
 export default function useRealTimePost() {
   const { sendMessage, lastMessage } = useWebSocket("wss://echo.websocket.org");
 
@@ -25,5 +26,5 @@ export default function useRealTimePost() {
     );
   }, [sendMessage]);
 
-  return [sendRealTimePost, realtimePost]
+  return [sendRealTimePost, realtimePost];
 }
