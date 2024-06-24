@@ -16,15 +16,15 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
+      - run: npm i
 
       - run: npm run test --watchAll=false
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: yarn start
-          build: yarn build
+          start: npm start
+          build: npm run build
           wait-on: "http://localhost:3000" # Waits for above
           # Records to Cypress Cloud
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
