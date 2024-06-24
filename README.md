@@ -57,15 +57,16 @@ https://github.com/geryit/esl-faceit/assets/514149/45b75afb-ea85-413b-bd36-1000e
 https://github.com/geryit/esl-faceit/assets/514149/3313a7e2-7dad-48c6-8be2-a03286c16472
 
 
+4. **Post Detail View**: When I select one of the Posts it goes to a new page. This new page has only that singular Post.
 
 
+5. **Enhanced Reading Experience**: It will render in such a way as to make it a more pleasant reading experience when compared to seeing it in the feed. For example, it reveals the whole body in this view, whilst in the feed it only shows 100 characters of the body.
 
+6. **Navigation**: I should be able to navigate back to the Feed from the Post and as an added bonus, I'm at the same scroll position I was before.
 
-6. **Post Detail View**: When I select one of the Posts it goes to a new page. This new page has only that singular Post.
+This video covers items: 4,5,6:
 
-7. **Enhanced Reading Experience**: It will render in such a way as to make it a more pleasant reading experience when compared to seeing it in the feed. For example, it reveals the whole body in this view, whilst in the feed it only shows 100 characters of the body.
-
-8. **Navigation**: I should be able to navigate back to the Feed from the Post and as an added bonus, I'm at the same scroll position I was before.
+https://github.com/geryit/esl-faceit/assets/514149/6e650f01-0e6a-4835-aead-bbe342ff23d9
 
 ### Design Suggestion
 
@@ -79,6 +80,15 @@ The following is a suggestion for the design, but not a requirement:
 - **Code Readability**: Please aim for readability of your code; remember, code is read more than it's written.
 - **Instructions**: Provide clear instructions on how to run the application. Be mindful of differences in operating systems, as the people who evaluate your test might be working on a different OS than yours.
 - **Testable Code**: We are very fond of testable code. Please showcase your ability to write good tests.
+  - ![Screenshot by Dropbox Capture](https://github.com/geryit/esl-faceit/assets/514149/53da38eb-c9d9-4d72-80e4-b9453830b000)
+  - 
+
+https://github.com/geryit/esl-faceit/assets/514149/7c102ee7-fb46-48fb-8f0e-5fbce289c71d
+
+
+
+
+
 - **Optimization Strategies**: Consider using different optimization strategies such as code splitting, lazy loading, tree-shaking, caching, etc.
 - **Core Web Vitals**: Please take care of your core web vitals and ensure best practices are followed.
 - **Version Control**: Make sure your code is version controlled using git.
