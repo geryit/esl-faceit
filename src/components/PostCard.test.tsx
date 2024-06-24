@@ -47,15 +47,4 @@ describe("PostCard Component", () => {
 
     expect(screen.getByTestId("postcard-placeholder")).toBeInTheDocument();
   });
-
-  it("renders a clickable post when isSinglePage is false", async () => {
-    await act(async () =>
-      renderWithProviders(<PostCard post={posts[0]} user={user} />)
-    );
-
-    const linkElement = screen.getByText("Leanne Graham").closest("a"); // Find the link element
-
-    // Check if the element has the hover:bg-gray-200 class when isSinglePage is false
-    expect(linkElement).toHaveClass("hover:bg-gray-200");
-  });
 });

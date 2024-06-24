@@ -40,8 +40,10 @@ The following is a suggestion for the design, but not a requirement:
 - **Version Control**: Make sure your code is version controlled using git.
 - **Packaging**: Please package your application in compressed format either zip or tar.
 
+---
 
 ## Getting Started
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
@@ -58,9 +60,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To run intergration tests:
+
+```bash
+npm test
+```
+
+To run e2e tests:
+
+```bash
+npm run cypress:open
+```
 
 ## Learn More
 

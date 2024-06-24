@@ -22,6 +22,7 @@ function PostCard({ post, user }: Props) {
       className={`rounded p-4 bg-gray-100  transition duration-300 flex gap-4 ${
         isNewPost ? "animate-highlight" : ""
       }`}
+      data-test-id="post-card"
     >
       <div>
         <Image
