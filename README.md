@@ -1,5 +1,36 @@
 # Frontend Technical Test - Technology
 
+## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+First, run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Testing
+
+To run integration tests:
+
+```bash
+npm test
+```
+
+To run e2e tests on local:
+
+```bash
+npm run cypress:open
+```
+
+Live test: https://esl-faceit.vercel.app/
+
+
+---
+
 ## The FACEIT Feed Test
 
 You are tasked with implementing the following in a React app using TypeScript. It should take you no more than a few hours. You can mock your own data or use other services like [JSONPlaceholder](https://jsonplaceholder.typicode.com):
@@ -12,16 +43,29 @@ To help us evaluate technical fit, you must use Redux for state management, and 
 ### The User Scenario
 
 1. **Feed View**: As a user, when I start the App it directs me to the Feed view. The feed view has a scrollable list of Posts (20 items/page). Each Post has an author and a body of content. Each author has an avatar and a name.
+![Screenshot by Dropbox Capture](https://github.com/geryit/esl-faceit/assets/514149/4b16520c-191b-4535-9689-d43113585126)
 
 2. **Infinite Scrolling**: When I scroll to the bottom of the list it will load older posts.
 
+https://github.com/geryit/esl-faceit/assets/514149/45b75afb-ea85-413b-bd36-1000ee298e26
+
+
+
 3. **Real-Time Updates**: When a post is added while the user is navigating, a real-time message is pushed to the client and the post is pre-pended at the top of the list. Nice-to-have: the new post will be highlighted for the first few seconds.
 
-4. **Post Detail View**: When I select one of the Posts it goes to a new page. This new page has only that singular Post.
 
-5. **Enhanced Reading Experience**: It will render in such a way as to make it a more pleasant reading experience when compared to seeing it in the feed. For example, it reveals the whole body in this view, whilst in the feed it only shows 100 characters of the body.
+https://github.com/geryit/esl-faceit/assets/514149/3313a7e2-7dad-48c6-8be2-a03286c16472
 
-6. **Navigation**: I should be able to navigate back to the Feed from the Post and as an added bonus, I'm at the same scroll position I was before.
+
+
+
+
+
+6. **Post Detail View**: When I select one of the Posts it goes to a new page. This new page has only that singular Post.
+
+7. **Enhanced Reading Experience**: It will render in such a way as to make it a more pleasant reading experience when compared to seeing it in the feed. For example, it reveals the whole body in this view, whilst in the feed it only shows 100 characters of the body.
+
+8. **Navigation**: I should be able to navigate back to the Feed from the Post and as an added bonus, I'm at the same scroll position I was before.
 
 ### Design Suggestion
 
@@ -42,49 +86,4 @@ The following is a suggestion for the design, but not a requirement:
 
 ---
 
-## Getting Started
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Testing
-
-To run intergration tests:
-
-```bash
-npm test
-```
-
-To run e2e tests on local:
-
-```bash
-npm run cypress:open
-```
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
